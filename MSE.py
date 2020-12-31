@@ -92,12 +92,6 @@ def truth_to_sampEn(T, N_min_m):
         a_i[column] = np.sum(T[1,:, column])
 
     # Calculate A_m, B_m by summing all of the normalised a_i, b_i (probabilities) and dividing by the number summed (avg):
-    B_count = np.sum(b_i)
-    A_count = np.sum(a_i)
-
-    print(B_count)
-    print(A_count)
-
     A_m = np.sum(a_i) / (N_min_m*(N_min_m-1))
     B_m = np.sum(b_i) / (N_min_m*(N_min_m-1))
 
