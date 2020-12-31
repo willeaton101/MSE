@@ -21,52 +21,6 @@ def conv_to_hms(seconds):
     return hms_string
 
 
-#_____________________________________________________________________________________________________________________________________________
-def coarse_grain_avg(u, tau, time=[]):
-    # =====================================================================================================================================
-    # DESCRIPTION:
-    # Function produces a coarse-grain averaged time series of user-inputted time-series with scale tau
-    # In the case that u = u(t), user may want accompanying t time-series to be calculated
-    # INPUTS:
-    #    u [1D array]             - number of seconds
-    #    tau [int]                - coarse-grain scale
-    #    time (opt) [int, array]  - default set to 'No' indicates time array doesnt need to be calculated; otherwise 1D time array/time-series
-    # OUTPUTS:
-    #    cgu [1D array]           - coarse-grained time-series
-    #    cg_time (opt) [1D array] - accompanying time array for time-series
-    # =====================================================================================================================================
-
-    # Get size of time-series:
-    u_length = len(u)
-
-    # Calculate N/tau - length of coarse-grained time-series
-    N_tau = int(u_length/tau)
-
-    # Initialise empty coarse-grain array:
-    cgu = np.zeros(N_tau)
-    avg_t_temp = [] # Will hold the first and last cg-averaged time values to produce the cg_time array
-
-    # Coarse grain the time-series:
-    for j in range(N_tau):
-        cgu[j] = (1/tau)*np.sum(u[j*tau : (j+1)*tau])
-
-
-        # Calculates the first and last corase-grain time values from the array which can then be extrapolated for the rest of the array
-        if j==0 or j==N_tau-1:
-            if len(time) != len(u):
-                # Not used if time = 0 but still calculated
-                avg_t_temp.append((1/tau)*np.sum(time[j*tau : (j+1)*tau]))
-
-    # Calculate new accompanying 'time' array if defined by user (not = 0):
-    if len(time) != len(u):
-        # Interpolate the rest of the cg_time array values
-        cg_time =  np.linspace(avg_t_temp[0], avg_t_temp[1], num=N_tau)
-        return cg_time, cgu
-    else:
-        return cgu
-
-
-
 
 def truth_to_sampEn(T, N_min_m):
     # =====================================================================================================================================
